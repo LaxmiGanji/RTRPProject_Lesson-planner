@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .Signup-container {
+            background-color:#ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 40px;
+            width: 300px;
+        }
+        .Signup-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: hold;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px salmon;
+            border-radius: 5px;
+        }
+        .form-group input[type="submit"]{
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: blue;
+            color: aliceblue;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: brown;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="Signup-container">
+        <h2 align="center">Signup as Admin</h2>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="username"><b>Username</b></label>
+                <input type="text" id="username" name="username" 
+                placeholder="Enter your Username" required>
+            </div>
+            <div class="form-group">
+                <label for="email"><b>Email</b></label>
+                <input type="email" id="email" name="email" 
+                placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password"><b>password</b></label>
+                <input type="password" id="password" name="password" 
+                placeholder="Create your password" required>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Signup">
+            </div>
+            <div class="form-group">
+                <p>Already have an account? <a href="loginA.html">Login</a></p>
+            </div>
+
+           
+        </form>
+    </div>
+</body>
+</html>
