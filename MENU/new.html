@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Timetable</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+      }
+      
+      .timetable {
+        margin: 20px auto;
+        width: 80%;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      
+      th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+      }
+      
+      th {
+        background-color: #f2f2f2;
+      }
+      
+      select {
+        width: calc(100% - 20px);
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+      
+      select:focus {
+        border-color: #5c9edd;
+      }
+
+#submitBtn {
+    padding: 10px 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 50%;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #submitBtn:hover {
+    background-color: #15b71d;
+  }
+  
+  #submitBtn:focus {
+    outline: none;
+  }
+  
+
+.selected-table {
+    margin: 20px auto;
+    width: 80%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .selected-table h2 {
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .selected-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .selected-table th,
+  .selected-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+  }
+  
+  .selected-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .selected-table td {
+    background-color: #fff;
+    color: #333;
+  }
+  
+  .selected-table tr:nth-child(even) td {
+    background-color: #f9f9f9;
+  }
+  
+        
+      
+</style>
+</head>
+<body>
+  <div class="timetable">
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>1st Class (8:00)</th>
+          <th>2nd Class (9:00)</th>
+          <th>3rd Class (10:00)</th>
+          <th>4th Class (11:00)</th>
+          <th>5th Class (12:00)</th>
+          <th>6th Class (13:00)</th>
+          <th>7th Class (14:00)</th>
+        </tr>
+      </thead>
+      <tbody id="timetable-body">
+
+      </tbody>
+    </table>
+    <button id="submitBtn">Submit</button>
+  </div>
+
+  <div class="selected-table">
+    <h2>Selected Classes</h2>
+    <table id="selected-classes-table">
+
+    </table>
+  </div>
+  
+  <script>
+
+const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+function generateTimetable() {
+  const tbody = document.getElementById('timetable-body');
+  tbody.innerHTML = '';
+  
+  daysOfWeek.forEach(day => {
+    const row = document.createElement('tr');
+    row.innerHTML += <td>${day}</td>;
+    
+    for (let i = 0; i < 7; i++) {
+      const select = document.createElement('select');
+      select.innerHTML += '<option value="">Select Subject</option>';
+      select.innerHTML += '<option value="Math">Math</option>';
+      select.innerHTML += '<option value="Science">Science</option>';
+      select.innerHTML += '<option value="History">History</option>';
+      select.innerHTML += '<option value="English">English</option>';
+      select.innerHTML += '<option value="Geography">Geography</option>';
+      
+      const cell = document.createElement('td');
+      cell.appendChild(select);
+      row.appendChild(cell);
+    }
+    
+    tbody.appendChild(row);
+  });
+}
+
+window.onload = generateTimetable;
+
+document.getElementById('submitBtn').addEventListener('click', function() {
+    const selectedClassesTable = document.getElementById('selected-classes-table');
+    selectedClassesTable.innerHTML = ''; 
+    
+    const selectedClasses = [];
+    
+    const rows = document.querySelectorAll('#timetable-body tr');
+    rows.forEach(row => {
+      const day = row.cells[0].textContent;
+      
+      for (let i = 1; i <= 7; i++) {
+        const time = ${i}st Class (${getTimeFromIndex(i)});
+        const subject = row.cells[i].querySelector('select').value;
+        
+        if (subject !== '') {
+          selectedClasses.push({ day, time, subject });
+        }
+      }
+    });
+    
+    selectedClasses.forEach(classInfo => {
+      const newRow = selectedClassesTable.insertRow();
+      newRow.innerHTML = <td>${classInfo.day}</td><td>${classInfo.time}</td><td>${classInfo.subject}</td>;
+    });
+  });
+  
+  function getTimeFromIndex(index) {
+    const hour = 8 + index - 1;
+    return ${hour}:00;
+  }
+
+  </script>
+</body>
+</html>

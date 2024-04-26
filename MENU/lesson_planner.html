@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Lesson Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar styling */
+        #sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            padding: 20px;
+            transition: width 0.3s;
+        }
+
+        #sidebar h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        #sidebar li {
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #34495e;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        #sidebar li:hover {
+            background-color: #1abc9c;
+        }
+
+        /* Main content styling */
+        #main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 60px;
+            }
+
+            #main-content {
+                margin-left: 60px;
+            }
+
+            #sidebar ul li {
+                text-align: center;
+                padding: 15px;
+            }
+
+            #sidebar ul li span {
+                display: none;
+            }
+
+            #sidebar ul li i {
+                display: inline-block;
+            }
+        }
+
+        /* Lesson Planner styling */
+        .lesson-planner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lesson-planner-container h2 {
+            margin-bottom: 20px;
+        }
+
+        .lesson-form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .lesson-form label {
+            margin-top: 10px;
+        }
+
+        .lesson-form input,
+        .lesson-form select,
+        .lesson-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .lesson-form button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .lesson-form button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Success message styling */
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><button  onclick="window.location.href='dash_board.html'"><i class="fas fa-home"></i><span > Dashboard</span></li></button>
+            <li><button  onclick="window.location.href='course_planner.html'"><i  class="fas fa-book-open"></i><span > Course Planner</span></li></button>
+            <li><button onclick="window.location.href='Lesson_palnner.html'"><i class="fas fa-chalkboard-teacher"></i><span  > Lesson Planner</span></li></button>
+            <li><button  onclick="window.location.href='inbox.html'"><i class="fas fa-envelope"></i><span> Inbox</span></li></button>
+        </ul>
+    </div>
+
+    <!-- Main content area -->
+    <div id="main-content">
+        <div class="lesson-planner-container">
+            <h2>Faculty Lesson Planner</h2>
+            <!-- Lesson form -->
+            <form id="lesson-form" class="lesson-form" onsubmit="handleFormSubmit(event)">
+                <label for="lesson-name">Lesson Name:</label>
+                <input type="text" id="lesson-name" name="lesson-name" required>
+
+                <label for="lesson-description">Lesson Description:</label>
+                <textarea id="lesson-description" name="lesson-description" rows="4" required></textarea>
+
+                <label for="instructor">Instructor:</label>
+                <input type="text" id="instructor" name="instructor" required>
+
+                <label for="day">Day:</label>
+                <select id="day" name="day" required>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                </select>
+
+                <button type="submit">Create Lesson</button>
+            </form>
+
+            <!-- Success message container -->
+            <div id="success-message" class="success-message" style="display: none;">
+                Lesson created successfully!
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for form handling -->
+    <script>
+        // Function to handle form submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            // Retrieve form data
+            const lessonName = document.getElementById("lesson-name").value;
+            const lessonDescription = document.getElementById("lesson-description").value;
+            const instructor = document.getElementById("instructor").value;
+            const day = document.getElementById("day").value;
+
+            // Implement logic to create a lesson using form data
+            // For demonstration purposes, we'll just log the data to the console
+            console.log("Lesson Name:", lessonName);
+            console.log("Lesson Description:", lessonDescription);
+            console.log("Instructor:", instructor);
+            console.log("Day:", day);
+
+            // Display the success message
+            const successMessage = document.getElementById("success-message");
+            successMessage.style.display = "block";
+
+            // Reset the form after submission
+            event.target.reset();
+        }
+    </script>
+</body>
+
+</html>

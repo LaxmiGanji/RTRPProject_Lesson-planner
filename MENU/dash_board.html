@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar styling */
+        #sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            padding: 20px;
+            transition: width 0.3s;
+        }
+
+        #sidebar h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        #sidebar li {
+            padding: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #34495e;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        #sidebar li:hover {
+            background-color: #1abc9c;
+        }
+
+        /* Main content styling */
+        #main-content {
+            margin-left: 500px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+            display: flex;
+        }
+
+        /* Calendar styling */
+        .calendar-container {
+            flex: 3;
+            margin-right: 40px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 10px;
+        }
+
+        .calendar-header button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .calendar-header button:hover {
+            background-color: #2980b9;
+        }
+
+        .calendar-month {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 10px;
+            width: 100%;
+            max-width: 600px;
+            height: 450px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .calendar-day {
+            padding: 10px;
+            background-color: #ecf0f1;
+            text-align: left;
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .calendar-day h4 {
+            margin: 0;
+        }
+
+        .calendar-event {
+            padding: 5px;
+            background-color: #2ecc71;
+            color: white;
+            border-radius: 5px;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .event-input {
+            width: calc(100% - 20px);
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><button  onclick="window.location.href='dash_board.html'"><i class="fas fa-home"></i><span > Dashboard</span></li></button>
+            <li><button  onclick="window.location.href='course_planner.html'"><i class="fas fa-book-open"></i><span > Course Planner</span></li></button>
+            <li><button onclick="window.location.href='Lesson_palnner.html'"><i class="fas fa-chalkboard-teacher"></i><span  > Lesson Planner</span></li></button>
+            <li><button  onclick="window.location.href='inbox.html'"><i class="fas fa-envelope"></i><span> Inbox</span></li></button>
+        </ul>
+    </div>
+
+    <!-- Main content area -->
+    <div id="main-content">
+        <!-- Calendar container -->
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <button onclick="prevMonth()">Previous</button>
+                <span id="calendar-month" class="calendar-month"></span>
+                <button onclick="nextMonth()">Next</button>
+            </div>
+            <div id="calendar-grid" class="calendar-grid">
+                <!-- Calendar days will be dynamically generated here -->
+            </div>
+        </div>
+    <!-- JavaScript -->
+    <script>
+        const calendarGrid = document.getElementById("calendar-grid");
+        const calendarMonth = document.getElementById("calendar-month");
+        const notepadItems = document.getElementById("notepad-items");
+
+        // Initialize calendar date
+        const currentDate = new Date();
+
+        // Function to render the calendar
+        function renderCalendar(date) {
+            // Clear the calendar grid
+            calendarGrid.innerHTML = "";
+
+            // Set the calendar month and year
+            const monthNames = [
+                "January", "February", "March",
+                "April", "May", "June",
+                "July", "August", "September",
+                "October", "November", "December"
+            ];
+            const month = date.getMonth();
+            const year = date.getFullYear();
+            calendarMonth.textContent = `${monthNames[month]} ${year}`;
+
+            // Get the first day of the month
+            const firstDay = new Date(year, month, 1).getDay();
+
+            // Get the total days in the month
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Calculate the starting position in the grid
+            for (let i = 0; i < firstDay; i++) {
+                calendarGrid.innerHTML += `<div class="calendar-day"></div>`;
+            }
+
+            // Generate calendar days
+            for (let day = 1; day <= totalDays; day++) {
+                const calendarDay = document.createElement("div");
+                calendarDay.classList.add("calendar-day");
+                calendarDay.innerHTML = `
+                    <h4>${day}</h4>
+                    <textarea class="event-input" placeholder="Add event"></textarea>
+                `;
+
+                // Add click event listener to each calendar day
+                calendarDay.addEventListener("click", function () {
+                    const eventInput = calendarDay.querySelector(".event-input");
+                    eventInput.style.display = "block";
+
+                    // Add event on Enter key press
+                    eventInput.addEventListener("keydown", function (e) {
+                        if (e.key === "Enter") {
+                            const eventText = eventInput.value;
+                            if (eventText) {
+                                // Add event to the calendar day
+                                calendarDay.innerHTML += `
+                                    <div class="calendar-event">${eventText}</div>
+                                `;
+                                // Add event to the notepad
+                                addEventToNotepad(day, eventText);
+                                eventInput.value = "";
+                                eventInput.style.display = "none";
+                            }
+                            e.preventDefault();
+                        }
+                    });
+                });
+
+                calendarGrid.appendChild(calendarDay);
+            }
+        }
+
+        // Function to handle the "Previous" button click
+        function prevMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar(currentDate);
+        }
+
+        // Function to handle the "Next" button click
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar(currentDate);
+        }
+
+        // Function to add event to the notepad
+        function addEventToNotepad(day, eventText) {
+            const notepadItem = document.createElement("div");
+            notepadItem.classList.add("notepad-item");
+            notepadItem.innerHTML = `
+                <input type="checkbox" id="event-${day}" />
+                <label for="event-${day}">Day ${day}: ${eventText}</label>
+            `;
+            notepadItems.appendChild(notepadItem);
+        }
+
+        // Initial rendering of the calendar
+        renderCalendar(currentDate);
+    </script>
+</body>
+
+</html>
